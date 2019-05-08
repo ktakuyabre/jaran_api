@@ -1,0 +1,22 @@
+{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<div class="onsen">
+		<h2>Name : {{ onsen.onsen_name }}</h2>
+		<p>Name Kana : {{ onsen.onsen_name_kana }}</p>
+		<p>ID : {{ onsen.onsen_id }}</p>
+		<p>Address : {{ onsen.address }}</p>
+		<p>Region : {{ onsen.region }}</p>
+		<p>Prefecture : {{ onsen.prefecture }}</p>
+		<p>Large Area : {{ onsen.large_area }}</p>
+		<p>Small Area : {{ onsen.small_area }}</p>
+		<p>Nature Of Onsen : {{ onsen.nature_of_onsen }}</p>
+		<p>Area Name : {{ onsen.onsen_area_name }}</p>
+		<p>Area Name Kana : {{ onsen.onsen_area_name_kana }}</p>
+		<p>Area ID : {{ onsen.onsen_area_id }}</p>
+		<p>URL : <a href={{ onsen.onsen_area_url }}>{{ onsen.onsen_area_url }}</a></p>
+		<p>Area Caption : {{ onsen.onsen_area_caption }}</p>
+    </div>
+{% endblock %}
+
+

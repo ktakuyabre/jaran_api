@@ -1,0 +1,73 @@
+{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	{% for onsen in onsens %}
+		<div class="onsen">
+	    	<h2><a href="{% url 'jaran_onsen_detail' onsen_id=onsen.onsen_id %">{{ onsen.onsen_name }}</a></h2>
+		</div>
+{% endfor %}
+<div id="test">
+</div>
+<div id="result">
+</div>
+<button type="button" id="btn">Send The Get Request</button>
+<!--<a href="demo.htm">demo</a>-->
+{% load static %}
+<script type="text/javascript" src="{% static 'js/jquery.ajax-cross-origin.min.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+//$(document).ready(function(){
+$(function(){
+
+	var api_url = 'http://jws.jalan.net/APILite/HotelSearch/V1/' 
+	var key = 'peg16a7c976570'
+	var test_url = 'http://jws.jalan.net/APILite/HotelSearch/V1/?key=peg16a7c976570&pref=130000&l_area=137100&s_area=137102&h_type=0&o_pool=1&sauna=1&jacz=1'
+	//var test_url = "HTTP://JWS.JALAN.NET/APICOMMON/ONSENSEARCH/V1/?KEY=PEG16A7C976570&L_AREA=010300&COUNT=1&XML_PTN=1"
+
+	$('#btn').click(function(){
+		$('#test').html('working');  
+		$.ajax({
+			//url: api_url + "?key=" + key + "&pref=130000&l_area=137100&s_area=137102&h_type=0&o_pool=1&sauna=1&jacz=1",
+			url: test_url,
+			crossOrigin: true,
+			type: "GET",
+			dataType: "text",
+			success: function(data){
+				$('#result').html(data);
+				//console.log(data);
+			},
+			error: function(error){
+				//$('#result').html(error);
+				//$('#result').html(url + 'Failed');
+				$('#result').html(test_url);
+				//console.log('Error ${error}');
+			}
+		})
+	});
+});
+    /*(function($){
+        function processForm( e ){
+			var api_url = 'http://jws.jalan.net/APILite/HotelSearch/V1/'
+			var key = 'peg16a7c976570'
+
+            $.ajax({
+                url: api_url + "?key=" + key + "&pref=130000&l_area=137100&s_area=137102&h_type=0&o_pool=1&sauna=1&jacz=1",
+                //dataType: 'text',
+                type: 'get',
+                //contentType: 'application/x-www-form-urlencoded',
+                //data: $(this).serialize(),
+                success: function(result){
+                    $('#response pre').html(result);
+                },
+                error: function(error){
+                    console.log('Error ${error}') 
+                }
+            });
+
+            e.preventDefault();
+        }
+
+        $('#frmSearch').submit( processForm );
+    })(jQuery);*/
+</script>
+{% endblock %}

@@ -1,0 +1,6 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+	path('jaran_onsen/', views.jaran_onsen_page, name='jaran_onsen_page'),
+]
