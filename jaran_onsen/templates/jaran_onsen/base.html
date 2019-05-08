@@ -1,0 +1,27 @@
+{% load static %}
+<html>
+    <head>
+        <title>Jaran Onsen</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="{% url 'jaran_onsen_list' %}">Jaran Onsen</a></h1>
+        </div>
+		<a href="{% url 'jaran_onsen_api' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span>API</a>
+        <div class="content container"> 
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+				<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+				<script src="{% static 'js/search_area_inn.js' %}"></script>
+				{% block javascript %}{% endblock %}	
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

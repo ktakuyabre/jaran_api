@@ -1,0 +1,29 @@
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from .forms import jaranOnsenForm
+from django.shortcuts import redirect
+from .models import jaranOnsen, jaranOnsenPost
+
+
+# Create your views here.
+def jaran_onsen_list(request): 
+	onsens = jaranOnsen.objects.order_by('id') 
+	return render(request, 'jaran_onsen/jaran_onsen_list.html', {'onsens': onsens})
+
+def jaran_post_detail(request, onsen_id):
+	onsen = get_object_or_404(jaranOnsen, onsen_id=onsen_id)
+	return render(request, 'jaran_onsen/jaran_onsen_detail.html', {'onsen': onsen})
+
+def jaran_onsen_api(request, onsen_id):
+	if request.method == "POST":
+		form = jaranOnsenForm(request.POST)
+		if form.is_valid():		
+			key = peg1\
+6a7c976570
+			url = 			
+			onsen = form.save(commit=False)
+			onsen.save()
+			return redirect('jaran_onsen_detail', onsen_id=onsen.onsen_id)
+	else:
+		form = jaranOnsenForm()
+	return render(request, 'jaran_onsen/jaran_onsen_api.html', {form: form})

@@ -1,0 +1,26 @@
+{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<div class="onsen">
+		<h2>{{ onsen.onsen_name }}</h2>
+		<p>{{ onsen_area_caption }}{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<div class="onsen">
+		<h2>{{ onsen.onsen_name }}</h2>
+		<p>{{ onsen_area_caption }}{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<div class="onsen">
+		<h2>{{ onsen.onsen_name }}</h2>
+		<p>{{ onsen_area_caption }}{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<div class="onsen">
+		<h2>{{ onsen.onsen_name }}</h2>
+		<p>{{ onsen_area_caption }}{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<div class="onsen">
+		<h2>{{ onsen.onsen_name }}</h2>
+		<p>{{ onsen_area_caption }}

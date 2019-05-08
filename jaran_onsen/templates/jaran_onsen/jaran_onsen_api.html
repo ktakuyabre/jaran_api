@@ -1,0 +1,17 @@
+{% extends 'jaran_onsen/base.html' %}
+
+{% block content %}
+	<h2>Jaran Onsen API</h2>
+	<form method="POST" class="post-form">{% csrf_token %}
+		{{ form.as_p }}
+        <!--Region: <input type="text" name="reg"><br>-->
+		<!--Prefecture: <input type="text" name="pref"><br>-->
+        Large Area: <input type="text" name="l_area"><br>
+		<!--Small Area: <input type="text" name="s_area"><br>-->
+		<!--Onsen Quality: <input type="text" name="onsen_q"><br>--> 
+		<!--Start: <input type="text" name="start"><br>-->
+		<!--Count:--> <input type="hidden" name="count" value=100><br> 
+		<!--XML Pattern:--> <input type="hidden" name="xml_ptn" value=1><br>
+		<button type="submit" class="send_api_request btn btn-default">Send an API Request</button>
+	</form>
+{% endblock %}
