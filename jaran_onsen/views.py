@@ -92,6 +92,8 @@ def parseJaranXml(onsens, form):
 			onsen.onsen_area_id = nodeValueNoneCheck(onsen_area_ids[i], True)
 			onsen.onsen_area_url = nodeValueNoneCheck(onsen_area_urls[i])
 			onsen.onsen_area_caption = nodeValueNoneCheck(onsen_area_captions[i])
+			if jaranOnsen.objects.filter(onsen_id=onsen.onsen_id).exists():	
+				continue
 			onsens.append(onsen)
 			onsen.save()
 
