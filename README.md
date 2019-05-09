@@ -31,7 +31,7 @@ open url : http://localhost:8000/jaran\_onsen
 Back up
 
 ```
-$ docker exec -i $(docker ps | grep postgres | awk '{print $1}') pgdump -U postgres postgres > db_data.sql
+$ docker exec $(docker ps | grep postgres | awk '{print $1}') pg_dump -U postgres postgres > db_data.sql
 ```
 
 Restore

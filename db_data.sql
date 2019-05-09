@@ -417,7 +417,12 @@ CREATE TABLE public.jaran_onsen_jaranonsenpost (
     id integer NOT NULL,
     l_area integer NOT NULL,
     count integer NOT NULL,
-    xml_ptn integer NOT NULL
+    xml_ptn integer NOT NULL,
+    onsen_q integer NOT NULL,
+    pref integer NOT NULL,
+    reg integer NOT NULL,
+    s_area integer NOT NULL,
+    start integer NOT NULL
 );
 
 
@@ -583,7 +588,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 --
 
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
-1	pbkdf2_sha256$150000$1t1PeWuZ7YlR$s5zEw3mi+yROvJwE21j/bXR7YrhkHZB/eyLWomU5XQ4=	2019-05-08 03:12:30.814866+00	t	jaran			jarane@example.com	t	t	2019-05-06 10:14:23.087872+00
+1	pbkdf2_sha256$150000$1t1PeWuZ7YlR$s5zEw3mi+yROvJwE21j/bXR7YrhkHZB/eyLWomU5XQ4=	2019-05-09 04:53:47.418235+00	t	jaran			jarane@example.com	t	t	2019-05-06 10:14:23.087872+00
 \.
 
 
@@ -658,6 +663,7 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 48	2019-05-08 11:00:47.746344+00	28	鴨々川温泉	3		7	1
 49	2019-05-08 11:00:47.749828+00	27	薄別温泉	3		7	1
 50	2019-05-08 11:00:47.753862+00	26	定山渓温泉	3		7	1
+51	2019-05-09 04:53:52.647963+00	50	浜子温泉	3		7	1
 \.
 
 
@@ -701,6 +707,8 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 17	jaran_onsen	0001_initial	2019-05-06 10:14:00.064018+00
 18	sessions	0001_initial	2019-05-06 10:14:00.08567+00
 19	jaran_onsen	0002_auto_20190508_0432	2019-05-08 04:32:56.500253+00
+52	jaran_onsen	0003_auto_20190509_0341	2019-05-09 04:52:54.892933+00
+53	jaran_onsen	0004_auto_20190509_0353	2019-05-09 04:52:54.916015+00
 \.
 
 
@@ -711,6 +719,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 46o525y5ydwxsp5fianfxojt1qm04sps	YmI1ZDJmNzc0MDdmYTQ0ZWUyMDUxNDcwNjdkMTk2NDZlMzFlNmQzNTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjFkOThjMjY1Mzc2MzIzYzFiMDNjYmQxNDM3ZGE3ZDFiZjcwOTBkIn0=	2019-05-20 10:14:42.115904+00
 kuk77inwzowk0aa4vts2bubn0icky8wk	YmI1ZDJmNzc0MDdmYTQ0ZWUyMDUxNDcwNjdkMTk2NDZlMzFlNmQzNTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjFkOThjMjY1Mzc2MzIzYzFiMDNjYmQxNDM3ZGE3ZDFiZjcwOTBkIn0=	2019-05-22 03:12:30.820028+00
+r423tgtkvp7bbfakgrx5k7saqihkkxju	YmI1ZDJmNzc0MDdmYTQ0ZWUyMDUxNDcwNjdkMTk2NDZlMzFlNmQzNTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwMjFkOThjMjY1Mzc2MzIzYzFiMDNjYmQxNDM3ZGE3ZDFiZjcwOTBkIn0=	2019-05-23 04:53:47.422882+00
 \.
 
 
@@ -728,7 +737,7 @@ COPY public.jaran_onsen_jaranonsen (id, onsen_name, onsen_name_kana, onsen_id, o
 -- Data for Name: jaran_onsen_jaranonsenpost; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.jaran_onsen_jaranonsenpost (id, l_area, count, xml_ptn) FROM stdin;
+COPY public.jaran_onsen_jaranonsenpost (id, l_area, count, xml_ptn, onsen_q, pref, reg, s_area, start) FROM stdin;
 \.
 
 
@@ -778,7 +787,7 @@ SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 50, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 51, true);
 
 
 --
@@ -792,14 +801,14 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 40, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 51, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 53, true);
 
 
 --
 -- Name: jaran_onsen_jaranonsen_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.jaran_onsen_jaranonsen_id_seq', 49, true);
+SELECT pg_catalog.setval('public.jaran_onsen_jaranonsen_id_seq', 50, true);
 
 
 --

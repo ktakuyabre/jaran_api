@@ -3,15 +3,36 @@
 {% block content %}
 	<h2>Jaran Onsen API</h2>
 	<form method="POST" class="post-form">{% csrf_token %}
-		{{ form.as_p }}
-        <!--Region: <input type="text" name="reg"><br>-->
-		<!--Prefecture: <input type="text" name="pref"><br>-->
+        Region: <input type="text" name="reg"><br>
+		Prefecture: <input type="text" name="pref"><br>
         Large Area: <input type="text" name="l_area"><br>
-		<!--Small Area: <input type="text" name="s_area"><br>-->
-		<!--Onsen Quality: <input type="text" name="onsen_q"><br>--> 
-		<!--Start: <input type="text" name="start"><br>-->
-		<!--Count:--> <input type="hidden" name="count" value=100><br> 
-		<!--XML Pattern:--> <input type="hidden" name="xml_ptn" value=1><br>
+		Small Area: <input type="text" name="s_area"><br>
+		Onsen Quality: <input typt="text" name="onsen_q"><br>
+				<!--<select name="onsen-q" required>
+				<option value=0>絞り込まない</option>
+				<option value=1>単純温泉</option>
+				<option value=2>アルカリ単純泉</option>
+				<option value=3>単純炭酸泉</option>
+				<option value=4>弱アルカリ性低張生泉</option>
+				<option value=5>中性低張性高温泉</option>
+				<option value=6>塩化物泉</option>
+				<option value=7>ナトリウム塩化物泉</option>
+				<option value=8>炭酸水素塩泉</option>
+				<option value=9>炭酸鉄泉</option>
+				<option value=10>硫酸塩泉</option>
+				<option value=11>二酸化炭素泉</option>
+				<option value=12>含鉄泉</option>
+				<option value=13>含銅一鉄泉</option>
+				<option value=14>硫黄泉</option>
+				<option value=15>酸性泉</option>
+				<option value=16>含アルミニウム泉</option>
+				<option value=17>放射能泉</option>
+				<option value=18>鉱泉</option>
+				<option value=99>その他</option>
+			</select><br>-->
+		Start: <input type="text" name="start" value=1><br>
+		Count: <input type="text" name="count" value=100><br> 
+		XML Pattern: <input type="text" name="xml_ptn" value=1><br>
 		<button type="submit" class="send_api_request btn btn-default">Send an API Request</button>
 	</form>
 {% endblock %}

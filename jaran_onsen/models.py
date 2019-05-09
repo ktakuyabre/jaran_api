@@ -2,14 +2,14 @@ from django.conf import settings
 from django.db import models
 
 class jaranOnsenPost(models.Model):
-    #reg = models.IntegerField()
-    #pref = models.IntegerField()
-    l_area = models.IntegerField()
-    #s_area = models.IntegerField()
-    #onsen_q = models.IntegerField()
-    #start = models.IntegerField()
-    count = models.IntegerField()
-    xml_ptn = models.IntegerField()
+    reg = models.IntegerField(default=0)
+    pref = models.IntegerField(default=0)
+    l_area = models.IntegerField(default=0)
+    s_area = models.IntegerField(default=0)
+    onsen_q = models.IntegerField(default=0)
+    start = models.IntegerField(default=0)
+    count = models.IntegerField(default=0)
+    xml_ptn = models.IntegerField(default=0)
 
 class jaranOnsen(models.Model):
     onsen_name = models.TextField()

@@ -1,7 +1,7 @@
 {% extends 'jaran_onsen/base.html' %}
 
 {% block content %}
-	<h1>New onsens have been added. </h1>
+	<h1>Following New onsens have been added.</h1>
 	{% for onsen in onsens %}
     	<div class="onsen">
         	<h2><a href="{% url 'jaran_onsen_detail' onsen_id=onsen.onsen_id %}">{{ onsen.onsen_name }}</a></h2>
