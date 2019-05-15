@@ -4,7 +4,9 @@ from .forms import jaranOnsenForm
 from django.shortcuts import redirect
 from .models import jaranOnsen, jaranOnsenPost
 import urllib.request
+#from bs4 import BeautifulSoup
 from xml.dom.minidom import parseString
+
 
 
 # Create your views here.
@@ -108,3 +110,20 @@ def nodeValueNoneCheck(element, id = False):
 			return 0
 		else:	
 			return "None"	 
+
+def getJranOnsenInns(onsen):
+	try:
+		url = 'https://www.jalan.net/onsen/OSN_' + onsen.area_id + '.html'
+		html = urllib.request.openurl(url)
+		soup = BeautifulSoup(html, 'html.parser') 
+		jaran_onsen_inns = ()
+		
+		for link in soup.find_all('a'):
+			name = link.get_text()
+			if onsen.name in name:
+				jaran_onsen_inns.append(link)
+
+		return jaran_onsen_inns
+
+	except urllib.error.HTTPError as error:
+		pass
