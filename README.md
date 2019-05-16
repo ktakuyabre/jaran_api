@@ -3,7 +3,7 @@
 
 ##Docker
 
-Download Docker on your Mac or Windows : https://hub.docker.com/editions/community/docker-ce-desktop-mac(Mac), https://hub.docker.com/editions/community/docker-ce-desktop-windows(Windows)
+Download Docker on your Mac or Windows : https://hub.docker.com/editions/community/docker-ce-desktop-mac (Mac), https://hub.docker.com/editions/community/docker-ce-desktop-windows (Windows)
 Open Docker.
 
 
@@ -23,7 +23,7 @@ $ docker-compose down
 
 ##Usage
 
-open url : http://localhost:8000/jaran\_onsen
+open url : http://localhost:8000/jaran_onsen
 
 
 ##Backup and restore database
