@@ -41,5 +41,5 @@ $ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgre
 
 jaran_get_data.py
 ```
-$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 jaran_get_data.py <yad-id>
+$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 jaran_get_data.py -w <word> <yad-id>
 ```
