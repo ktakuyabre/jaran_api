@@ -3,7 +3,7 @@
 
 ##Docker
 
-Download Docker on your Mac or Windows : https://hub.docker.com/editions/community/docker-ce-desktop-mac(Mac), https://hub.docker.com/editions/community/docker-ce-desktop-windows(Windows)
+Download Docker on your Mac or Windows : https://hub.docker.com/editions/community/docker-ce-desktop-mac (Mac), https://hub.docker.com/editions/community/docker-ce-desktop-windows (Windows)
 Open Docker.
 
 
@@ -23,7 +23,7 @@ $ docker-compose down
 
 ##Usage
 
-open url : http://localhost:8000/jaran\_onsen
+open url : http://localhost:8000/jaran_onsen
 
 
 ##Backup and restore database
@@ -39,7 +39,7 @@ Restore
 $ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgres -d postgres < db_data.sql
 ```
 
-jaran_get_data.py
+jaran\_get\_data.py
 ```
 $ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 jaran_get_data.py <yad-id>
 ```
