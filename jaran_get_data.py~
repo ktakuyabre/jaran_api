@@ -89,7 +89,7 @@ def getJaranReviewsData(url):
 
 def jaranStrParser(str, dict):
 
-    mt = MeCab.Tagger("-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd")
+    mt = MeCab.Tagger()
     parsed = mt.parseToNode(removeBadChars(str))
     while parsed:
         word = parsed.surface
