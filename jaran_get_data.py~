@@ -10,26 +10,37 @@ keyword = ""
 keyword_flg = False
 jaran_inn_data = []
 
+def usage():
+    print("NAME: jaran_get_data.py -- scrape data from jaran web pages")
+    print("USAGE: python3 jaran_get_data.py <yad-id>")
+    print("-h --help - show the usage of jaran_get_data.py")
+    print("-w --word - show the total number of the word appearing in the reviews. ")
+    print("")
+    print("EXAMPLES: ")
+    print("python3 jaran_get_data.py 321542")
+    print("python3 jaran_get_data.py -w 温泉 321542")
+    print("")
+    sys.exit(2)
+    
 def main():
+    global yad_id
+    global keyword
+    global keyword_flg
+    
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hw:", ["help", "id", "keyword"])
-        global yad_id
         yad_id = args[0]
     except:
-        print("python3 jaran_get_vars.py -w <keyword> <yad-id>")
-        sys.exit(2)
+        usage()
 
     for opt, arg in opts:
         if opt == "-h":
-            print("python3 jaran_get_data.py -w <keyword> <yad-id>")
-            sys.exit()
-        if opt in ("-w", "--keyword"):
-            global keyword
+            usage()
+        if opt in ("-w", "--word"):
             keyword = arg
-            global keyword_flg
             keyword_flg = True
 
-def getJaranInnsData():
+def getJaranInnData():
 
     try:
         url_main = "https://www.jalan.net/yad" + yad_id
@@ -89,7 +100,7 @@ def getJaranReviewsData(url):
 
 def jaranStrParser(str, dict):
 
-    mt = MeCab.Tagger()
+    mt = MeCab.Tagger("-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd")
     parsed = mt.parseToNode(removeBadChars(str))
     while parsed:
         word = parsed.surface
@@ -109,4 +120,4 @@ def removeBadChars(str):
 if __name__ == "__main__":
 
     main()
-    getJaranInnsData()
+    getJaranInnData()

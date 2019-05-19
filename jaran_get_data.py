@@ -40,7 +40,9 @@ def main():
             keyword = arg
             keyword_flg = True
 
-def getJaranInnsData():
+    getJaranInnData()
+
+def getJaranInnData():
 
     try:
         url_main = "https://www.jalan.net/yad" + yad_id
@@ -120,4 +122,3 @@ def removeBadChars(str):
 if __name__ == "__main__":
 
     main()
-    getJaranInnsData()
