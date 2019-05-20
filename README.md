@@ -14,6 +14,12 @@ $ docker-compose up
 $ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgres -d postgres < db_data.sql
 ```
 
+When you pull the origin branch
+```
+$ docker-compose up --build
+$ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgres -d postgres < db_data.sql
+```
+
 When you shut down jaran\_api
 
 ```
@@ -40,6 +46,21 @@ $ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgre
 ```
 
 jaran\_get\_data.py
+show help :
+```
+$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 rurubu_get_data.py -h 
+```
+quick usage :
 ```
 $ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 jaran_get_data.py <yad-id>
+```
+
+rurubu\_get\_data.py
+show help :
+```
+$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 rurubu_get_data.py -h 
+```
+quick usage :
+```
+$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 rurubu_get_data.py url 
 ```

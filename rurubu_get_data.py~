@@ -22,12 +22,12 @@ def usage():
     print("NAME: rurubu_get_data.py -- scrape data from rurubu web pages")
     print("USAGE: python3 rurubu_get_data.py url")
     print("-h --help - show the usage of rurubu_get_data.py")
-    print("-c --count - ")
-    print("-r --region_id - ")
-    print("-p --pref_id - ")
-    print("-l --l_area_id - ")
-    print("-s --s_area_id - ")
-    print("-d --d_area_id - ")
+    print("-c --count - limit the number of search results, max = 30")
+    print("-r --region_id - specify the region id")
+    print("-p --pref_id - specify the prefecture id")
+    print("-l --l_area_id - specify the larege area id")
+    print("-s --s_area_id - specify the small area id")
+    print("-d --d_area_id - specify the detailed area id")
     #print("-i --inn_id - ")
     
     print("")
@@ -63,7 +63,6 @@ def main():
             url = url_base
         #region_id = args[0]
     except:
-        print(3)
         usage()
 
     for opt, arg in opts:
@@ -94,8 +93,8 @@ def main():
             print(rurubu_inn_data)            
             break'''
     #url = formRurubuUrl()
-    page = 2
-    url = url + str(page) + ".htm"
+    #page = 2
+    #url = url + str(page) + ".htm"
     getRurubuInnUrls(url)
     for i in range(0, len(rurubu_inn_urls)):
         if i == count:
