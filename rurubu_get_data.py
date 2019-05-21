@@ -43,6 +43,8 @@ def usage():
     print("")
     print("python3 rurubu_get_data.py -c 42 -n 2,7 https://rurubu.travel/A08")
     print("")
+    print("python3 rurubu_get_data.py -c 150 -n 1-3,21-23 https://rurubu.travel/A08")
+    print("")
     print("python3 rurubu_get_data.py -c 10 -r A08 https://rurubu.travel")
     print("")
     print("python3 rurubu_get_data.py -c 10 -r A08")
@@ -54,7 +56,7 @@ def main():
     global s_url
     global c_count
     global max_count
-    global pages
+    global page_numbers
     global region_id
     global pre_id
     global l_area_id
@@ -84,9 +86,17 @@ def main():
         if opt in ("-c", "--count"):
             max_count = int(arg)
         if opt in ("-n", "--page_numbers"):
-            pattern = "\d+"
-            match = re.findall(pattern, arg)
-            page_numbers = match
+            page_numbers = []
+            pattern = "([0-9]+)(\-[0-9]+)?"
+            matches = re.findall(pattern, arg)
+            for match in matches:
+                if match:
+                    if "-" in match[1]:
+                        for i in range(int(match[0]), int(match[1][1:])+1):
+                            page_numbers.append(i)
+                    else:
+                        page_numbers.append(int(match[0]))
+
         if opt in ("-r", "--region_id"):
             region_id = arg
             url = url + "/" + region_id
@@ -115,7 +125,7 @@ def main():
     for page_num in page_numbers: 
         breaker = False
         if page_num != 1:
-            url = s_url + str(page_num) + ".htm"
+            url = s_url + "/" + str(page_num) + ".htm"
         print("the rurubu page currently searching : " + url)
         getRurubuInnUrls(url)
         while True:

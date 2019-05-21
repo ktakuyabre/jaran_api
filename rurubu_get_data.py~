@@ -39,6 +39,10 @@ def usage():
     print("EXAMPLES: ")
     print("python3 rurubu_get_data.py https://rurubu.travel/A08/")
     print("")
+    print("python3 rurubu_get_data.py -c 10 -n 2 https://rurubu.travel/A08")
+    print("")
+    print("python3 rurubu_get_data.py -c 42 -n 2,7 https://rurubu.travel/A08")
+    print("")
     print("python3 rurubu_get_data.py -c 10 -r A08 https://rurubu.travel")
     print("")
     print("python3 rurubu_get_data.py -c 10 -r A08")
@@ -50,7 +54,7 @@ def main():
     global s_url
     global c_count
     global max_count
-    global pages
+    global page_numbers
     global region_id
     global pre_id
     global l_area_id
@@ -80,7 +84,21 @@ def main():
         if opt in ("-c", "--count"):
             max_count = int(arg)
         if opt in ("-n", "--page_numbers"):
-            page_numbers = [int(arg)]
+            page_numbers = []
+            pattern = "([0-9]+)(\-[0-9]+)?"
+            #matches = re.search(pattern, arg)
+            matches = re.findall(pattern, arg)
+            #print(matches)
+            #print(matches.group(1))
+            #print(matches.group(2)[1:])
+            for match in matches:
+                if match:
+                    if "-" in match[1]:
+                        for i in range(int(match[0]), int(match[1][1:])):
+                            page_numbers.append(i)
+                    else:
+                        page_numbers.append(int(match[0]))
+
         if opt in ("-r", "--region_id"):
             region_id = arg
             url = url + "/" + region_id
@@ -109,7 +127,8 @@ def main():
     for page_num in page_numbers: 
         breaker = False
         if page_num != 1:
-            url = url + str(page_num) + ".htm"
+            url = s_url + "/" + str(page_num) + ".htm"
+        print("the rurubu page currently searching : " + url)
         getRurubuInnUrls(url)
         while True:
             getRurubuInnData(rurubu_inn_urls[c_count])
@@ -123,8 +142,9 @@ def main():
         if breaker:
             break
             
-    print(rurubu_inn_urls)
-    print("the number of searched results : {0}".format(c_count))    
+    #print(rurubu_inn_urls)
+    print("the last page number : {0}".format(last_page))
+    print("the number of searched results : {0}".format(c_count))
     print(rurubu_inn_data)
     
 def getRurubuInnData(url):
@@ -160,7 +180,6 @@ def getRurubuLastPage(url):
         match = re.search(pattern, soup.find("li", {"class": "last"}).find("a")["href"])
         if match:
             last_page = match.group(1)
-            print(last_page)
         else:
             print("no last_page")
         
@@ -242,7 +261,7 @@ def rurubuStrParser(str, dict):
         parsed = parsed.next
 
 def removeBadChars(str):
-    bad_chars = [",", ".", "、","。","*", ";", " ", "&nbsp", "\n"]    
+    bad_chars = [",", ".", "、","。","*", ";", " ", "&nbsp", "\u3000", "\n"]    
     for i in bad_chars:
         str = str.replace(i, "")
     return str
