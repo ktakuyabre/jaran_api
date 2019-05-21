@@ -15,14 +15,19 @@ d_area_id = ""
 #inn_id = ""
 rurubu_inn_data = []
 rurubu_inn_urls = []
-count = 1000
-#count_flg = False
+rurubu_inn_names = []
+max_count = 30
+c_count = 0
+n_count = 0
+page_numbers = [1]
+last_page = 0
 
 def usage():
     print("NAME: rurubu_get_data.py -- scrape data from rurubu web pages")
     print("USAGE: python3 rurubu_get_data.py url")
     print("-h --help - show the usage of rurubu_get_data.py")
     print("-c --count - limit the number of search results, maximum number = 30")
+    print("-n --page_numbers - specify page numbers you search") 
     print("-r --region_id - specify the region id")
     print("-p --pref_id - specify the prefecture id")
     print("-l --l_area_id - specify the larege area id")
@@ -34,6 +39,10 @@ def usage():
     print("EXAMPLES: ")
     print("python3 rurubu_get_data.py https://rurubu.travel/A08/")
     print("")
+    print("python3 rurubu_get_data.py -c 10 -n 2 https://rurubu.travel/A08")
+    print("")
+    print("python3 rurubu_get_data.py -c 42 -n 2,7 https://rurubu.travel/A08")
+    print("")
     print("python3 rurubu_get_data.py -c 10 -r A08 https://rurubu.travel")
     print("")
     print("python3 rurubu_get_data.py -c 10 -r A08")
@@ -43,7 +52,9 @@ def usage():
 def main():
 
     global s_url
-    global count
+    global c_count
+    global max_count
+    global pages
     global region_id
     global pre_id
     global l_area_id
@@ -51,17 +62,19 @@ def main():
     global d_area_id
     global inn_id
 
+
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hc:r:p:l:s:d:i:", ["help", "count", "region_id", "pref_id", "l_area_id", "s_area_id", "d_area_id", "inn_id"])
+        opts, args = getopt.getopt(sys.argv[1:], "hc:n:r:p:l:s:d:i:", ["help", "count", "page_numbers", "region_id", "pref_id", "l_area_id", "s_area_id", "d_area_id", "inn_id"])
         
         arg = sys.argv[-1]
+        if len(sys.argv) < 2:
+            usage()
         if "http" in arg:
-        #if len(sys.argv) > 1 && "c" not in opts:
             s_url = sys.argv[-1]
             url = s_url
         else:
             url = url_base
-        #region_id = args[0]
+
     except:
         usage()
 
@@ -69,7 +82,11 @@ def main():
         if opt == "-h":
             usage()
         if opt in ("-c", "--count"):
-            count = int(arg)
+            max_count = int(arg)
+        if opt in ("-n", "--page_numbers"):
+            pattern = "\d+"
+            match = re.findall(pattern, arg)
+            page_numbers = match
         if opt in ("-r", "--region_id"):
             region_id = arg
             url = url + "/" + region_id
@@ -93,24 +110,29 @@ def main():
             print(rurubu_inn_data)            
             break'''
     #url = formRurubuUrl()
-    #page = 2
-    #url = url + str(page) + ".htm"
-    getRurubuInnUrls(url)
-    for i in range(0, len(rurubu_inn_urls)):
-        if i == count:
-            break
-        getRurubuInnData(rurubu_inn_urls[i])
-    '''if count_flg:
-        for i in range(0, len(rurubu_inn_urls)):
-            if i == count:
+    getRurubuLastPage(url)
+    
+    for page_num in page_numbers: 
+        breaker = False
+        if page_num != 1:
+            url = s_url + str(page_num) + ".htm"
+        print("the rurubu page currently searching : " + url)
+        getRurubuInnUrls(url)
+        while True:
+            getRurubuInnData(rurubu_inn_urls[c_count])
+            c_count += 1
+
+            if c_count == max_count:
+                breaker = True
                 break
-            getRurubuInnData(rurubu_inn_urls[i])
-    else:
-        for url in rurubu_inn_urls:
-            getRurubuInnData(url)'''
+            if c_count == len(rurubu_inn_urls):
+                break
+        if breaker:
+            break
             
-    print(rurubu_inn_urls)
-    print(count)    
+    #print(rurubu_inn_urls)
+    print("the last page number : {0}".format(last_page))
+    print("the number of searched results : {0}".format(c_count))
     print(rurubu_inn_data)
     
 def getRurubuInnData(url):
@@ -135,20 +157,44 @@ def rurubuHtmlParser(url):
     except urllib.error.HTTPError as error:
         pass
 
+def getRurubuLastPage(url):
+    
+    global last_page
+    
+    try:
+        pattern = "^([0-9]+)\.htm$"
+        soup = rurubuHtmlParser(url)
+        #last_page = int(soup.find("ul", {"class": "pageGuid"}).find("li", {"class": "last"}).getText())
+        match = re.search(pattern, soup.find("li", {"class": "last"}).find("a")["href"])
+        if match:
+            last_page = match.group(1)
+        else:
+            print("no last_page")
+        
+    except urllib.error.HTTPError as error:
+        print("no last_page")
+        pass
+                          
 def getRurubuInnUrls(url):
 
     global rurubu_inn_urls
+    global rurubu_inn_names
 
     try:
         soup = rurubuHtmlParser(url)
         for inn_link in soup.find_all("a", {"class": "hotelName"}):
             rurubu_inn_urls.append(url_base + inn_link["href"])
+            rurubu_inn_names.append(removeBadChars(inn_link.get_text()))
+        
+        
         #inn_link = soup.find_all("a", {"class": "hotelName"})[5]:
         #rurubu_inn_urls.append(url_base + inn_link["href"])
         #count = len(rurubu_inn_urls)
         
     except urllib.error.HTTPError as error:
         pass
+
+
 
 def getRurubuMainData(url):
 
@@ -160,6 +206,7 @@ def getRurubuMainData(url):
        max_cost = soup.find("span", {"itemprop": "highPrice"})
 
        data = []
+       data.append(rurubu_inn_names[c_count])
        data.append(removeBadChars(min_cost.get_text()))
        data.append(removeBadChars(max_cost.get_text()))                  
 
@@ -202,7 +249,7 @@ def rurubuStrParser(str, dict):
         parsed = parsed.next
 
 def removeBadChars(str):
-    bad_chars = [",", ".", "、","。","*", ";", " ", "&nbsp", "\n"]    
+    bad_chars = [",", ".", "、","。","*", ";", " ", "&nbsp", "\u3000", "\n"]    
     for i in bad_chars:
         str = str.replace(i, "")
     return str

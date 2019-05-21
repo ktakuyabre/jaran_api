@@ -48,7 +48,7 @@ $ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgre
 jaran\_get\_data.py
 show help :
 ```
-$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 rurubu_get_data.py -h 
+$ docker exec -i $(docker ps | grep jaran_api_web | awk '{print $1}') python3 jaran_get_data.py -h 
 ```
 quick usage :
 ```
