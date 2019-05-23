@@ -27,14 +27,14 @@ def usage():
     print("USAGE: python3 rurubu_get_data.py url")
     print("-h --help - show the usage of rurubu_get_data.py")
     print("-c --count - limit the number of search results, maximum number = 30")
-    print("-n --page_numbers - specify page numbers you search") 
+    print("-n --page_numbers - specify page numbers you search")
     print("-r --region_id - specify the region id")
     print("-p --pref_id - specify the prefecture id")
     print("-l --l_area_id - specify the larege area id")
     print("-s --s_area_id - specify the small area id")
     print("-d --d_area_id - specify the detailed area id")
     #print("-i --inn_id - ")
-    
+
     print("")
     print("EXAMPLES: ")
     print("python3 rurubu_get_data.py https://rurubu.travel/A08/")
@@ -50,7 +50,7 @@ def usage():
     print("python3 rurubu_get_data.py -c 10 -r A08")
     print("")
     sys.exit(2)
-    
+
 def main():
 
     global s_url
@@ -67,7 +67,7 @@ def main():
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hc:n:r:p:l:s:d:i:", ["help", "count", "page_numbers", "region_id", "pref_id", "l_area_id", "s_area_id", "d_area_id", "inn_id"])
-        
+
         arg = sys.argv[-1]
         if len(sys.argv) < 2:
             usage()
@@ -117,12 +117,12 @@ def main():
             url = url + "/" + inn_id + "/top.html?ref=regular"
             print(url)
             getRurubuInnData(url)
-            print(rurubu_inn_data)            
+            print(rurubu_inn_data)
             break'''
     #url = formRurubuUrl()
     getRurubuLastPage(url)
-    
-    for page_num in page_numbers: 
+
+    for page_num in page_numbers:
         breaker = False
         if page_num != 1:
             url = s_url + "/" + str(page_num) + ".htm"
@@ -139,12 +139,12 @@ def main():
                 break
         if breaker:
             break
-            
+
     #print(rurubu_inn_urls)
     print("the last page number : {0}".format(last_page))
     print("the number of searched results : {0}".format(c_count))
     print(rurubu_inn_data)
-    
+
 def getRurubuInnData(url):
 
     try:
@@ -160,17 +160,17 @@ def rurubuHtmlParser(url):
 
     try:
         html = urllib.request.urlopen(url)
-        soup = BeautifulSoup(html, "html.parser")    
+        soup = BeautifulSoup(html, "html.parser")
 
-        return soup                
+        return soup
 
     except urllib.error.HTTPError as error:
         pass
 
 def getRurubuLastPage(url):
-    
+
     global last_page
-    
+
     try:
         pattern = "^([0-9]+)\.htm$"
         soup = rurubuHtmlParser(url)
@@ -180,11 +180,12 @@ def getRurubuLastPage(url):
             last_page = match.group(1)
         else:
             print("no last_page")
-        
+
     except urllib.error.HTTPError as error:
         print("no last_page")
         pass
-                          
+
+## 検索結果のリンク先のURL
 def getRurubuInnUrls(url):
 
     global rurubu_inn_urls
@@ -195,35 +196,71 @@ def getRurubuInnUrls(url):
         for inn_link in soup.find_all("a", {"class": "hotelName"}):
             rurubu_inn_urls.append(url_base + inn_link["href"])
             rurubu_inn_names.append(removeBadChars(inn_link.get_text()))
-        
-        
+
+
         #inn_link = soup.find_all("a", {"class": "hotelName"})[5]:
         #rurubu_inn_urls.append(url_base + inn_link["href"])
         #count = len(rurubu_inn_urls)
-        
+
     except urllib.error.HTTPError as error:
         pass
 
+'''
+取るべきデータ
 
-
+取ってあるデータ
+値段（最大・最小）
+'''
 def getRurubuMainData(url):
 
     global rurubu_inn_data
 
     try:
        soup = rurubuHtmlParser(url)
+       ## 値段の取得
        min_cost = soup.find("span", {"itemprop": "lowPrice"})
        max_cost = soup.find("span", {"itemprop": "highPrice"})
 
        data = []
        data.append(rurubu_inn_names[c_count])
        data.append(removeBadChars(min_cost.get_text()))
-       data.append(removeBadChars(max_cost.get_text()))                  
+       data.append(removeBadChars(max_cost.get_text()))
+       # 詳細ページからデータを取得
+       detail_link = soup.find("div", {"class": "data"}).find("a", {"class" : "addAbox"})
+       if not detail_link == None:
+          url_detail = url_base + detail_link["href"]
+          getRurubuDetailPageData(url_detail)
+          data.append(rurubu_detail_data)
 
        rurubu_inn_data.append(data)
-   
+
     except urllib.error.HTTPError as error:
         pass
+
+def getRurubuDetailPageData(url):
+    global rurubu_detail_data
+
+    try:
+       # print(url)
+       soup = rurubuHtmlParser(url)
+       ## レジャー施設とコンビニのデータ
+       leisures = []
+       conveni = []
+       for content in soup.find("div", {"id" : "tabbody-detail"}).find_all("tr"):
+           title = content.th.get_text()
+           if title == 'レジャーランド' :
+               leisures.append(title) #content.td
+           elif title == 'コンビニエンスストア':
+               conveni.append(title) #content.td
+
+       rurubu_detail_data = []
+       rurubu_detail_data.append(leisures)
+       rurubu_detail_data.append(conveni)
+
+    except urllib.error.HTTPError as error:
+        pass
+
+    pass
 
 def getRurubuReviewsData(url):
 
@@ -241,7 +278,7 @@ def getRurubuReviewsData(url):
                 print("keyword '" + keyword + "' appears " + str(dict[keyword]) + " times in the reviews.")
             else:
                 print("keyword '" + keyword + "' doen't appear in the reviews.")
-                #print(review.get_text()) 
+                #print(review.get_text())
 
     except urllib.error.HTTPError as error:
         pass
@@ -259,7 +296,7 @@ def rurubuStrParser(str, dict):
         parsed = parsed.next
 
 def removeBadChars(str):
-    bad_chars = [",", ".", "、","。","*", ";", " ", "&nbsp", "\u3000", "\n"]    
+    bad_chars = [",", ".", "、","。","*", ";", " ", "&nbsp", "\u3000", "\n"]
     for i in bad_chars:
         str = str.replace(i, "")
     return str
@@ -268,4 +305,4 @@ def removeBadChars(str):
 if __name__ == "__main__":
 
     main()
-    
+
