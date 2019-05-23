@@ -14,12 +14,6 @@ $ docker-compose up
 $ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgres -d postgres < db_data.sql
 ```
 
-When you pull the origin branch
-```
-$ docker-compose up --build
-$ docker exec -i $(docker ps | grep postgres | awk '{print $1}') psql -U postgres -d postgres < db_data.sql
-```
-
 When you shut down jaran\_api
 
 ```
