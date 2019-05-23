@@ -1,5 +1,8 @@
 #jaran\_api
 
+##Members
+Mizushima Shunto
+Kawai Takuya
 
 ##Docker
 
